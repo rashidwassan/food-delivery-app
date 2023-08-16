@@ -1,11 +1,1 @@
-<svg id="Component_1_1" data-name="Component 1 – 1" xmlns="http://www.w3.org/2000/svg" width="25" height="38" viewBox="0 0 25 38">
-  <g id="Rectangle_95" data-name="Rectangle 95" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1">
-    <rect width="25" height="38" rx="5" stroke="none"/>
-    <rect x="0.5" y="0.5" width="24" height="37" rx="4.5" fill="none"/>
-  </g>
-  <line id="Line_35" data-name="Line 35" x1="24" transform="translate(0.5 31.5)" fill="none" stroke="#000" stroke-width="1"/>
-  <g id="Ellipse_48" data-name="Ellipse 48" transform="translate(11 33)" fill="none" stroke="#000" stroke-width="0.5">
-    <circle cx="1.5" cy="1.5" r="1.5" stroke="none"/>
-    <circle cx="1.5" cy="1.5" r="1.25" fill="none"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" id="Component_1_1" width="25" height="38" data-name="Component 1 – 1" viewBox="0 0 25 38"><g id="Rectangle_95" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1" data-name="Rectangle 95"><rect width="25" height="38" stroke="none" rx="5"/><rect width="24" height="37" x=".5" y=".5" fill="none" rx="4.5"/></g><line id="Line_35" x1="24" fill="none" stroke="#000" stroke-width="1" data-name="Line 35" transform="translate(0.5 31.5)"/><g id="Ellipse_48" fill="none" stroke="#000" stroke-width=".5" data-name="Ellipse 48" transform="translate(11 33)"><circle cx="1.5" cy="1.5" r="1.5" stroke="none"/><circle cx="1.5" cy="1.5" r="1.25" fill="none"/></g></svg>

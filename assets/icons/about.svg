@@ -1,4 +1,1 @@
-<svg id="Component_5_1" data-name="Component 5 – 1" xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39">
-  <circle id="Ellipse_17" data-name="Ellipse 17" cx="19.5" cy="19.5" r="19.5" fill="#fbb814"/>
-  <text id="_" data-name="!" transform="translate(17 28)" fill="#0e0e0e" font-size="20" font-family="SegoeUI, Segoe UI"><tspan x="0" y="0">!</tspan></text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" id="Component_5_1" width="39" height="39" data-name="Component 5 – 1" viewBox="0 0 39 39"><circle id="Ellipse_17" cx="19.5" cy="19.5" r="19.5" fill="#fbb814" data-name="Ellipse 17"/><text id="_" fill="#0e0e0e" data-name="!" font-family="SegoeUI, Segoe UI" font-size="20" transform="translate(17 28)"><tspan x="0" y="0">!</tspan></text></svg>
