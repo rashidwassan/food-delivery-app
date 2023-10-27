@@ -1,0 +1,39 @@
+name: sayfood
+description: A new Flutter project.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+
+dependencies:
+
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  chewie: ^1.7.0
+  video_player: ^2.7.0
+  flappy_search_bar_ns: ^2.0.2
+  flutter_staggered_grid_view: ^0.4.1
+  velocity_x: ^4.1.1
+  get_secure_storage: ^1.0.4
+  cloud_firestore: ^4.11.0
+  firebase_auth: ^4.11.1
+  firebase_core: ^2.19.0
+  firebase_storage: ^11.3.1
+  flutter_svg: ^2.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/anim/
+    - assets/icons/
+    - assets/images/

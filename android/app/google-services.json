@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "767749225886",
+    "project_id": "sayfood-b0919",
+    "storage_bucket": "sayfood-b0919.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767749225886:android:65afaec760fa4a86b3aa8f",
+        "android_client_info": {
+          "package_name": "com.example.sayfood"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4vTAop6bMBgIqxH9_hvT4zKcUgt6_isU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
