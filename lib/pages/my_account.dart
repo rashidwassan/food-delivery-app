@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sayfood/pages/about_app.dart';
-import 'package:sayfood/pages/delivery_addresses.dart';
 import 'package:sayfood/pages/favorites_screen.dart';
 import 'package:sayfood/pages/help_screen.dart';
 import 'package:sayfood/pages/my_orders.dart';

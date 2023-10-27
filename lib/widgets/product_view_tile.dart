@@ -15,7 +15,7 @@ Widget buildDealsViewWithBottomTitle(
               ? null
               : DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage(imagePath),
+                  image: NetworkImage(imagePath),
                 ),
         ),
       ),

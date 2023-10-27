@@ -1,17 +1,64 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sayfood/models/user.dart';
 import 'package:sayfood/pages/main_screen.dart';
 import 'package:sayfood/styles/app_theme.dart';
 import 'package:sayfood/styles/images.dart';
 import 'package:sayfood/styles/strings.dart';
 import 'package:sayfood/styles/styling.dart';
+import 'package:sayfood/utils/firebase_services.dart';
 import 'package:sayfood/widgets/new_products_vendors_appbar.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class EditProfileScreen extends StatelessWidget {
+class EditProfileScreen extends StatefulWidget {
   static const String id = '/EditProfile';
 
   const EditProfileScreen({super.key});
+
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  SFUser user = const SFUser(
+      uid: '0',
+      email: 'Fetching...',
+      name: 'Loading...',
+      phone: 'Fetching...',
+      profileImageUrl: '',
+      createdAt: 243,
+      updatedAt: 23424,
+      isActive: true,
+      dob: 2,
+      points: 0,
+      permisions: [],
+      favorites: []);
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  loadUserData() async {
+    user = await FirebaseServices.fetchUserData(
+            FirebaseAuth.instance.currentUser!.uid) ??
+        const SFUser(
+            uid: '0',
+            email: 'example@gmail.com',
+            name: 'Loading',
+            phone: 'Fetching...',
+            profileImageUrl: '',
+            createdAt: 243,
+            updatedAt: 23424,
+            isActive: true,
+            dob: 2,
+            points: 0,
+            permisions: [],
+            favorites: []);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return MainPage(
@@ -32,7 +79,7 @@ class EditProfileScreen extends StatelessWidget {
               children: [
                 _buildProfileItemRow(
                     leadingText: Strings.fullName,
-                    middleText: Strings.userName,
+                    middleText: user.name,
                     onTap: () {}),
                 const Divider(
                   height: 8,
@@ -40,14 +87,14 @@ class EditProfileScreen extends StatelessWidget {
                 ).px(16),
                 _buildProfileItemRow(
                     leadingText: Strings.mobile,
-                    middleText: '########',
+                    middleText: user.phone,
                     trailingText: Strings.changeNumber),
                 const Divider(
                   height: 8,
                   thickness: 1,
                 ).px(16),
                 _buildProfileItemRow(
-                    leadingText: Strings.email, middleText: Strings.userMail),
+                    leadingText: Strings.email, middleText: user.email),
               ],
             ).p(8),
           ).p(24)

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_secure_storage/get_secure_storage.dart';
 import 'package:sayfood/styles/images.dart';
-import 'package:sayfood/styles/styling.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 
@@ -29,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void startTimer() async {
-    Future.delayed(const Duration(milliseconds: 2500), () {
+    Future.delayed(const Duration(milliseconds: 2000), () {
       if (GetSecureStorage().read('isLoggedIn') == 'true') {
         Navigator.pushNamed(context, '/MainPage');
       } else {
@@ -62,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Styling.mainPurple,
+      backgroundColor: const Color(0xFFF0EAAE),
       body: Center(
         child: Container(
           child: (_chewieController == null)

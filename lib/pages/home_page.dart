@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sayfood/models/food.dart';
 import 'package:sayfood/pages/product_page.dart';
 import 'package:sayfood/styles/app_theme.dart';
 import 'package:sayfood/styles/images.dart';
@@ -39,7 +41,7 @@ class _HomePageState extends State<HomePage> {
 
   //final SearchBarController _searchBarController = SearchBarController();
   int _currentCategoryIndex = 2;
-  final int _currentDealsIndex = 0;
+  int _currentDealsIndex = 0;
   @override
   Widget build(BuildContext context) {
     // // MyProvider provider = Provider.of<MyProvider>(context);
@@ -57,7 +59,7 @@ class _HomePageState extends State<HomePage> {
           _buildDealsSwiper().px(20),
           8.heightBox,
           SwiperDotsIndicator(_currentDealsIndex),
-          32.heightBox,
+          8.heightBox,
           _categotyBodyWidgets[_currentCategoryIndex],
         ],
       ),
@@ -70,24 +72,48 @@ class _HomePageState extends State<HomePage> {
         _buildNewProductsAndVendorsTitle(
                 title: Strings.newProducts, pageName: '/AllNewProductsGridPage')
             .px(20),
-        GridView.builder(
-          shrinkWrap: true,
-          itemCount: 4,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 12,
-          ),
-          itemBuilder: (context, index) {
-            return SizedBox(
-                width: 155,
-                height: 155,
-                child:
-                    buildDealsViewWithBottomTitle(title: "New Product").px(4));
-          },
-        ).p(20),
+        StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('foods').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator(
+                  backgroundColor: Styling.mainPurple,
+                );
+              }
+
+              final foodDocs = snapshot.data!.docs;
+              List<Food> foods = [];
+
+              for (var foodDoc in foodDocs) {
+                final foodData = foodDoc.data();
+                Food food = Food.fromMap(foodData);
+                foods.add(food);
+              }
+              return GridView.builder(
+                shrinkWrap: true,
+                itemCount: foods.length,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 12,
+                ),
+                itemBuilder: (context, index) {
+                  return SizedBox(
+                      width: 155,
+                      height: 155,
+                      child: buildDealsViewWithBottomTitle(
+                              title: "New Product",
+                              imagePath: foods[index].imageUrl)
+                          .px(4));
+                },
+              ).p(20);
+            }),
         _buildNewProductsAndVendorsTitle(
                 title: Strings.newVendors, pageName: '/AllNewVendorsListPage')
             .px(20),
@@ -185,28 +211,59 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildBestSellingProductsGrid() {
-    return GridView.builder(
-      shrinkWrap: true,
-      itemCount: 8,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 12,
-      ),
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, ProductPage.id);
-          },
-          child: SizedBox(
-              width: 155,
-              height: 155,
-              child: buildDealsViewWithBottomTitle(title: " ").px(4)),
-        );
-      },
-    ).p(16);
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('foods').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(
+              backgroundColor: Styling.mainPurple,
+            );
+          }
+
+          final foodDocs = snapshot.data!.docs;
+          List<Food> foods = [];
+
+          for (var foodDoc in foodDocs) {
+            final foodData = foodDoc.data();
+            Food food = Food.fromMap(foodData);
+            foods.add(food);
+          }
+
+          return GridView.builder(
+            shrinkWrap: true,
+            itemCount: foods.length,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 12,
+            ),
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProductPage(
+                                product: foods[index],
+                              )));
+                },
+                child: SizedBox(
+                    width: 155,
+                    height: 155,
+                    child: buildDealsViewWithBottomTitle(
+                            title: foods[index].title,
+                            imagePath: foods[index].imageUrl)
+                        .px(4)),
+              );
+            },
+          ).p(16);
+        });
   }
 
   Widget buildProductListTitle({required String title}) {
@@ -241,10 +298,16 @@ class _HomePageState extends State<HomePage> {
         //     });
         //   },
         //   itemBuilder: (context, index) {
-        //     return buildDealsViewWithBottomTitle(title: Strings.deals).px(4);
+        //     return buildDealsViewWithBottomTitle(
+        //       title: 'Deals',
+        //     ).px(4);
         //   },
         // ),
-        child: buildDealsViewWithBottomTitle(title: Strings.deals).px(4),
+        child: buildDealsViewWithBottomTitle(
+                title: Strings.deals,
+                imagePath:
+                    'https://rancherscafe.com/wp-content/uploads/2023/08/split-screen-horizantal-min.jpeg')
+            .px(4),
       ),
     );
   }

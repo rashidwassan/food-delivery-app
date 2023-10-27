@@ -14,7 +14,7 @@ AppBar mainYellowAppbar({
     title: Image.asset(
       Images.logosf,
       height: 55,
-      color: Colors.white,
+      color: Colors.black,
     ),
     actions: [
       _buildNotificationIcon(notifications: notifications, context: context)

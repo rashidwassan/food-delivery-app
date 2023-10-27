@@ -78,8 +78,8 @@ class _MainPageState extends State<MainPage> {
             _currentPage = 2;
           });
         },
-        child: Container(
-          child: Image.asset(Images.middleBottomButton),
+        child: Image.asset(
+          Images.middleBottomButton,
         ),
       ),
     );
@@ -97,7 +97,10 @@ class _MainPageState extends State<MainPage> {
       },
       child: SizedBox(
         width: context.percentWidth * 17,
-        child: SvgPicture.asset(icon),
+        child: SvgPicture.asset(
+          icon,
+          color: _currentPage == indexValue ? Colors.purple.shade600 : null,
+        ),
       ).pOnly(bottom: 8),
     );
   }

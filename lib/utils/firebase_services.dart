@@ -90,6 +90,22 @@ class FirebaseServices {
     }
   }
 
+  static Future<SFUser?> fetchUserData(String uid) async {
+    try {
+      DocumentSnapshot userSnapshot =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (userSnapshot.exists) {
+        return SFUser.fromMap(userSnapshot.data() as Map<String, dynamic>);
+      } else {
+        return null; // User with the specified UID not found.
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+      return null;
+    }
+  }
+
   // static Stream<QuerySnapshot> getMessagesStreamFromACollection(
   //     {required String collectionName}) {
   //   CollectionReference messagesCollection =

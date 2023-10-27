@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sayfood/models/food.dart';
 import 'package:sayfood/pages/main_screen.dart';
 import 'package:sayfood/styles/app_theme.dart';
 import 'package:sayfood/styles/images.dart';
@@ -11,8 +12,9 @@ import 'package:velocity_x/velocity_x.dart';
 
 class ProductPage extends StatefulWidget {
   static const String id = '/ProductPage';
+  final Food? product;
 
-  const ProductPage({super.key});
+  const ProductPage({super.key, this.product});
   @override
   _ProductPageState createState() => _ProductPageState();
 }
@@ -29,7 +31,12 @@ class _ProductPageState extends State<ProductPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Icon(Icons.close, color: Colors.grey, size: 25),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child:
+                        const Icon(Icons.close, color: Colors.grey, size: 25)),
                 SvgPicture.asset(Images.roundedAFavIconOutlined),
               ],
             ),
@@ -39,6 +46,15 @@ class _ProductPageState extends State<ProductPage> {
               child: Container(
                 decoration: Styling.lightGreyDecoration(radius: 15),
                 width: double.infinity,
+                child: widget.product != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          widget.product!.imageUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : null,
               ),
             ).py(8),
             SizedBox(
@@ -80,15 +96,15 @@ class _ProductPageState extends State<ProductPage> {
                 Strings.description,
                 style: AppTheeme.normalSmallText.copyWith(color: Colors.grey),
               ),
-              trailing:
-                  SizedBox(height: 20, child: CustomRatingBar(rating: 2)),
+              trailing: SizedBox(height: 20, child: CustomRatingBar(rating: 2)),
             ),
             const Text(Strings.productionDescription).px(5),
             32.heightBox,
             MaterialButton(
-                height: 35,
+                height: 45,
+                elevation: 1,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4)),
+                    borderRadius: BorderRadius.circular(6)),
                 color: Styling.darkGrey,
                 minWidth: double.infinity,
                 onPressed: () {
@@ -148,7 +164,7 @@ class _ProductPageState extends State<ProductPage> {
                         ],
                       )),
             const Text(Strings.itemDetails).py(16),
-            const Text('-\n-\n-\n-\n'),
+            if (widget.product != null) Text(widget.product!.description),
             16.heightBox,
             Row(
               children: [
