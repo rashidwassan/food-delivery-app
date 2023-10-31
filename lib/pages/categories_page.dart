@@ -54,29 +54,33 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   Expanded _buildCategoriesList() {
     return Expanded(
       flex: 4,
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: 9,
-        itemBuilder: (context, index) {
-          return MaterialButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-            padding: const EdgeInsets.all(0),
-            onPressed: () {},
-            height: context.percentHeight * 7.5,
-            color: Styling.lightGrey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${Strings.category}  ${index + 1}',
-                  style: AppTheeme.normalButtonText,
-                  overflow: TextOverflow.ellipsis,
-                ).pOnly(left: 8, right: 8),
-              ],
-            ),
-          );
-        },
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(topRight: Radius.circular(12)),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: 14,
+          itemBuilder: (context, index) {
+            return MaterialButton(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0)),
+              padding: const EdgeInsets.all(0),
+              onPressed: () {},
+              height: context.percentHeight * 6,
+              color: Styling.lightGrey,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${Strings.category}  ${index + 1}',
+                    style: AppTheeme.normalButtonText,
+                    overflow: TextOverflow.ellipsis,
+                  ).pOnly(left: 8, right: 8),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -107,7 +111,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       child: AnimatedContainer(
         height: 55,
         width: 60,
-        duration: const Duration(milliseconds: 150),
+        duration: const Duration(milliseconds: 250),
         decoration: BoxDecoration(
             color:
                 (_currentTab == value) ? Styling.mainPurple : Styling.lightGrey,

@@ -14,20 +14,21 @@ class MyOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainPage(
-      child: Container(
-        child: Column(
-          children: [
-            buildNewProductsAndVendorsAppbar(
-                height: 50, title: Strings.myOrders),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return _customMyOrdersCard(context);
-                  }),
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          buildNewProductsAndVendorsAppbar(
+              height: 45, title: Strings.myOrders, buildBackIcon: false),
+          const SizedBox(
+            height: 12,
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return _customMyOrdersCard(context);
+                }),
+          ),
+        ],
       ),
     );
   }
@@ -55,7 +56,7 @@ class MyOrdersScreen extends StatelessWidget {
                 16.widthBox
               ],
             ),
-            16.heightBox,
+            8.heightBox,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -84,6 +85,6 @@ class MyOrdersScreen extends StatelessWidget {
           ],
         ).py(16).px(24),
       ),
-    ).p((16));
+    ).px((16)).py(6);
   }
 }

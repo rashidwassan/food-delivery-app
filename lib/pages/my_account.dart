@@ -19,69 +19,62 @@ class MyAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          buildNewProductsAndVendorsAppbar(
-              height: 45,
-              title: FirebaseAuth.instance.currentUser!.displayName ?? ''),
-          16.heightBox,
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                _buildFollowerStatusRow(),
-                32.heightBox,
-                _buildProfileScreenRow(
-                    icon: Images.myOrders,
-                    title: Strings.myOrders,
-                    onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, MyOrdersScreen.id);
-                    }),
-                12.heightBox,
-                _buildProfileScreenRow(
-                    icon: Images.favourite,
-                    title: Strings.favorite,
-                    onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, FavoritesScreen.id);
-                    }),
-                12.heightBox,
-                _buildProfileScreenRow(
-                    icon: Images.settings,
-                    title: Strings.settings,
-                    onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, SettingsScreen.id);
-                    }),
-                12.heightBox,
-                _buildProfileScreenRow(
-                    icon: Images.help,
-                    title: Strings.help,
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, HelpScreen.id);
-                    }),
-                12.heightBox,
-                _buildProfileScreenRow(
-                    icon: Images.about,
-                    title: Strings.about,
-                    onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, AboutAppScreen.id);
-                    }),
-                12.heightBox,
-                _buildProfileScreenRow(
-                    icon: Images.rateApplication,
-                    title: Strings.rateApplication,
-                    onTap: () {}),
-                16.heightBox,
-                _buildLogoutButton(buildContext: context)
-              ],
-            ).p(24),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        buildNewProductsAndVendorsAppbar(
+            height: 45,
+            title: FirebaseAuth.instance.currentUser!.displayName ?? ''),
+        Expanded(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              _buildFollowerStatusRow(),
+              32.heightBox,
+              _buildProfileScreenRow(
+                  icon: Images.myOrders,
+                  title: Strings.myOrders,
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, MyOrdersScreen.id);
+                  }),
+              12.heightBox,
+              _buildProfileScreenRow(
+                  icon: Images.favourite,
+                  title: Strings.favorite,
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, FavoritesScreen.id);
+                  }),
+              12.heightBox,
+              _buildProfileScreenRow(
+                  icon: Images.settings,
+                  title: Strings.settings,
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, SettingsScreen.id);
+                  }),
+              12.heightBox,
+              _buildProfileScreenRow(
+                  icon: Images.help,
+                  title: Strings.help,
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, HelpScreen.id);
+                  }),
+              12.heightBox,
+              _buildProfileScreenRow(
+                  icon: Images.about,
+                  title: Strings.about,
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, AboutAppScreen.id);
+                  }),
+              12.heightBox,
+              _buildProfileScreenRow(
+                  icon: Images.rateApplication,
+                  title: Strings.rateApplication,
+                  onTap: () {}),
+              32.heightBox,
+              _buildLogoutButton(buildContext: context)
+            ],
+          ).p(24),
+        ),
+      ],
     );
   }
 
@@ -111,9 +104,10 @@ class MyAccount extends StatelessWidget {
   Widget _buildProfileScreenRow(
       {required String icon, required String title, Function()? onTap}) {
     return MaterialButton(
-      height: 60,
+      height: 65,
+      elevation: 1,
       color: Styling.lightGrey,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       onPressed: onTap,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -126,7 +120,7 @@ class MyAccount extends StatelessWidget {
             style: AppTheeme.newProductsAndVendorsTitleFont,
           )
         ],
-      ).px(24),
+      ).px(12),
     );
   }
 
@@ -148,7 +142,7 @@ class MyAccount extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
         decoration: BoxDecoration(
-            color: Styling.mainPurple, borderRadius: BorderRadius.circular(10)),
+            color: Styling.mainPurple, borderRadius: BorderRadius.circular(12)),
         child: Center(
           child: Text(
             text,

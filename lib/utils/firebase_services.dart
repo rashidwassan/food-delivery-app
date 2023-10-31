@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_secure_storage/get_secure_storage.dart';
+import 'package:sayfood/models/order.dart';
 import 'package:sayfood/models/user.dart';
 
 class FirebaseServices {
@@ -106,12 +107,13 @@ class FirebaseServices {
     }
   }
 
-  // static Stream<QuerySnapshot> getMessagesStreamFromACollection(
-  //     {required String collectionName}) {
-  //   CollectionReference messagesCollection =
-  //       firestore.collection(collectionName);
-  //   return messagesCollection
-  //       .orderBy('timestamp', descending: true)
-  //       .snapshots();
-  // }
+  static Future<String?> placeOrder({required SFOrder order}) async {
+    CollectionReference bugReportsCollection = firestore.collection('orders');
+    try {
+      await bugReportsCollection.add(order.toJson());
+      return null;
+    } catch (e) {
+      return 'Error, $e';
+    }
+  }
 }

@@ -1,6 +1,6 @@
 enum Status { pending, processing, completed, canceled }
 
-class Order {
+class SFOrder {
   final String id;
   final String userId;
   final List<String> foodIds;
@@ -8,7 +8,7 @@ class Order {
   final DateTime orderDate;
   final Status status;
 
-  Order({
+  SFOrder({
     required this.id,
     required this.userId,
     required this.foodIds,
@@ -28,8 +28,8 @@ class Order {
     };
   }
 
-  factory Order.fromJson(Map<String, dynamic> json) {
-    return Order(
+  factory SFOrder.fromJson(Map<String, dynamic> json) {
+    return SFOrder(
       id: json['id'],
       userId: json['userId'],
       foodIds: List<String>.from(json['foodIds']),

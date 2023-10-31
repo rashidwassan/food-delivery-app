@@ -1,11 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sayfood/models/order.dart';
 import 'package:sayfood/provider/cart_items_provider.dart';
 import 'package:sayfood/styles/app_theme.dart';
 import 'package:sayfood/styles/images.dart';
 import 'package:sayfood/styles/strings.dart';
 import 'package:sayfood/styles/styling.dart';
+import 'package:sayfood/utils/firebase_services.dart';
+import 'package:sayfood/widgets/dialogs.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -50,19 +54,38 @@ class CheckoutScreen extends StatelessWidget {
   }
 
   Widget _buildPlaceOrderButton({required BuildContext buildContext}) {
-    return MaterialButton(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: Styling.darkGrey,
-      height: 60,
-      onPressed: () {},
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            Strings.placeOrder,
-            style: AppTheeme.productListTitleFont.copyWith(color: Colors.white),
-          )
-        ],
+    return Consumer<CartItemsProvider>(
+      builder: (ctx, cart, child) => MaterialButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        color: Styling.darkGrey,
+        height: 60,
+        onPressed: () {
+          FirebaseServices.placeOrder(
+                  order: SFOrder(
+                      id: DateTime.now().toString(),
+                      userId: FirebaseAuth.instance.currentUser!.uid,
+                      foodIds: [
+                        for (int i = 0; i < cart.cartItems.length; i++)
+                          cart.cartItems[i].id
+                      ],
+                      totalAmount: cart.discountPrice,
+                      orderDate: DateTime.now(),
+                      status: Status.pending))
+              .then((value) =>
+                  showInfoDialog(buildContext, 'Order Placed Successfully'))
+              .then((value) => cart.clearCart())
+              .then((value) => Navigator.pushNamed(buildContext, '/MainPage'));
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              Strings.placeOrder,
+              style:
+                  AppTheeme.productListTitleFont.copyWith(color: Colors.white),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -308,7 +331,7 @@ class CheckoutScreen extends StatelessWidget {
                       .copyWith(color: Colors.grey),
                 ),
               ],
-            ).pOnly(top: 8, bottom: 32)
+            ).pOnly(top: 8, bottom: 8)
           ],
         ).p(16).px(8),
       ),
