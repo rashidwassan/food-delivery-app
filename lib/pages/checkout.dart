@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:sayfood/provider/cart_items_provider.dart';
 import 'package:sayfood/styles/app_theme.dart';
 import 'package:sayfood/styles/images.dart';
 import 'package:sayfood/styles/strings.dart';
@@ -66,21 +68,28 @@ class CheckoutScreen extends StatelessWidget {
   }
 
   Widget _buildBillingCard() {
-    return Container(
-      decoration: Styling.lightGreyDecoration(radius: 25),
-      child: Column(
-        children: [
-          _buildPriceRow(
-              title: Strings.totalProductsPrice, price: Strings.rpPrice),
-          _divider,
-          _buildDiscountRow(title: Strings.discount, price: Strings.rpPrice),
-          _divider,
-          _buildPriceRow(title: Strings.serviceFees, price: Strings.rpPrice),
-          _divider,
-          _buildPriceRow(title: Strings.totalPrice, price: Strings.rpPrice),
-          _divider
-        ],
-      ).p(24),
+    return Consumer<CartItemsProvider>(
+      builder: (child, cart, c) => Container(
+        decoration: Styling.lightGreyDecoration(radius: 25),
+        child: Column(
+          children: [
+            _buildPriceRow(
+                title: Strings.totalProductsPrice,
+                price: '${cart.totalPrice} PKR'),
+            _divider,
+            _buildDiscountRow(
+                title: Strings.discount,
+                price: '${cart.totalPrice - cart.discountPrice} PKR'),
+            _divider,
+            _buildPriceRow(title: Strings.serviceFees, price: '25 PKR'),
+            _divider,
+            _buildPriceRow(
+                title: Strings.totalPrice,
+                price: (cart.discountPrice + 25).toString()),
+            _divider
+          ],
+        ).p(24),
+      ),
     );
   }
 
@@ -99,7 +108,8 @@ class CheckoutScreen extends StatelessWidget {
         ),
         Text(
           price,
-          style: AppTheeme.cartCheckoutBottomCardFont,
+          style: AppTheeme.cartCheckoutBottomCardFont
+              .copyWith(fontWeight: FontWeight.bold),
         )
       ],
     ).pOnly(top: 16, bottom: 8);
@@ -117,9 +127,9 @@ class CheckoutScreen extends StatelessWidget {
         Text(
           price,
           style: AppTheeme.cartCheckoutBottomCardFont.copyWith(
-            color: Colors.red,
-            decoration: TextDecoration.lineThrough,
-          ),
+              color: Colors.red,
+              decoration: TextDecoration.lineThrough,
+              fontWeight: FontWeight.bold),
         )
       ],
     ).pOnly(top: 16, bottom: 8);
@@ -232,7 +242,7 @@ class CheckoutScreen extends StatelessWidget {
             SvgPicture.asset(Images.deliveryTime),
             24.widthBox,
             const Text(
-              Strings.orderTime,
+              '${Strings.orderTime}:  ~30 min',
               style: AppTheeme.normalMediumSmallText,
             ),
           ],
@@ -256,12 +266,12 @@ class CheckoutScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  Strings.currentAddress,
+                  'Current Branch',
                   style: AppTheeme.normalMediumSmallText,
                 ),
                 4.heightBox,
                 const Text(
-                  Strings.currentAddress,
+                  'Branch #2, Latifabad, Hyderabad',
                   style: AppTheeme.normalSmallerButtonText,
                 ),
               ],

@@ -3,7 +3,7 @@ import 'package:sayfood/styles/app_theme.dart';
 import 'package:sayfood/styles/styling.dart';
 
 Widget buildNewProductsAndVendorsAppbar(
-    {required String title, double height = 35}) {
+    {required String title, double height = 35, bool buildBackIcon = true}) {
   return AppBar(
     backgroundColor: Styling.lightGrey,
     iconTheme: const IconThemeData(color: Styling.lighterDarkGrey),
@@ -13,6 +13,7 @@ Widget buildNewProductsAndVendorsAppbar(
     ),
     centerTitle: true,
     toolbarHeight: height,
+    automaticallyImplyLeading: buildBackIcon,
   );
 }
 

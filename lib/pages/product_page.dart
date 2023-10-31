@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sayfood/models/food.dart';
 import 'package:sayfood/pages/main_screen.dart';
+import 'package:sayfood/provider/cart_items_provider.dart';
 import 'package:sayfood/styles/app_theme.dart';
 import 'package:sayfood/styles/images.dart';
 import 'package:sayfood/styles/strings.dart';
@@ -20,7 +22,13 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  int _cartItems = 0;
+  bool productNotEmpty = false;
+  @override
+  void initState() {
+    super.initState();
+    productNotEmpty = (widget.product != null);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MainPage(
@@ -88,8 +96,8 @@ class _ProductPageState extends State<ProductPage> {
                 width: 50,
                 decoration: Styling.lightGreyDecoration(radius: 10),
               ).px(4),
-              title: const Text(
-                Strings.vendorName,
+              title: Text(
+                productNotEmpty ? widget.product!.category : Strings.vendorName,
                 style: AppTheeme.normalSmallText,
               ),
               subtitle: Text(
@@ -100,69 +108,80 @@ class _ProductPageState extends State<ProductPage> {
             ),
             const Text(Strings.productionDescription).px(5),
             32.heightBox,
-            MaterialButton(
-                height: 45,
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
-                color: Styling.darkGrey,
-                minWidth: double.infinity,
-                onPressed: () {
-                  setState(() {
-                    _cartItems++;
-                  });
-                },
-                child: (_cartItems == 0)
-                    ? const Text(
-                        Strings.addToCart,
-                        style: AppTheeme.normalButtonTextWhite,
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MaterialButton(
-                            padding: const EdgeInsets.all(0),
-                            onPressed: () {
-                              setState(() {
-                                _cartItems++;
-                              });
-                            },
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                          ),
-                          24.widthBox,
-                          Container(
-                            height: 30,
-                            width: 30,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Text(
-                                _cartItems.toString(),
-                                style: AppTheeme.normalSmallText,
+            Consumer<CartItemsProvider>(builder:
+                (BuildContext context, CartItemsProvider value, Widget? child) {
+              return MaterialButton(
+                  height: 45,
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6)),
+                  color: Styling.darkGrey,
+                  minWidth: double.infinity,
+                  onPressed: () {
+                    if (productNotEmpty) {
+                      value.addToCart(widget.product!);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Added to cart')));
+                    }
+                  },
+                  child: (value.cartItems
+                          .where((element) => element.id == widget.product!.id)
+                          .isEmpty)
+                      ? const Text(
+                          Strings.addToCart,
+                          style: AppTheeme.normalButtonTextWhite,
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MaterialButton(
+                              padding: const EdgeInsets.all(0),
+                              onPressed: () {
+                                if (productNotEmpty) {
+                                  value.addToCart(widget.product!);
+                                }
+                              },
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.white,
                               ),
                             ),
-                          ),
-                          24.widthBox,
-                          MaterialButton(
-                            padding: const EdgeInsets.all(0),
-                            onPressed: () {
-                              setState(() {
-                                _cartItems--;
-                              });
-                            },
-                            child: SvgPicture.asset(
-                              Images.deleteIcon,
-                              color: Colors.white,
-                              height: 20,
+                            24.widthBox,
+                            Container(
+                              height: 30,
+                              width: 30,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  value.cartItems
+                                      .where((element) =>
+                                          element.id == widget.product!.id)
+                                      .length
+                                      .toString(),
+                                  style: AppTheeme.normalSmallText,
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                      )),
+                            24.widthBox,
+                            MaterialButton(
+                              padding: const EdgeInsets.all(0),
+                              onPressed: () {
+                                if (productNotEmpty) {
+                                  value.removeFromCart(widget.product!);
+                                }
+                              },
+                              child: SvgPicture.asset(
+                                Images.deleteIcon,
+                                color: Colors.white,
+                                height: 20,
+                              ),
+                            ),
+                          ],
+                        ));
+            }),
             const Text(Strings.itemDetails).py(16),
             if (widget.product != null) Text(widget.product!.description),
             16.heightBox,

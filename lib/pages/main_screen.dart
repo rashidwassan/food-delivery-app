@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sayfood/pages/cart.dart';
 import 'package:sayfood/pages/categories_page.dart';
 import 'package:sayfood/pages/home_page.dart';
 import 'package:sayfood/pages/my_account.dart';
 import 'package:sayfood/pages/search_screen.dart';
+import 'package:sayfood/provider/cart_items_provider.dart';
 import 'package:sayfood/styles/images.dart';
 import 'package:sayfood/widgets/main_yellow_appbar.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -95,13 +97,48 @@ class _MainPageState extends State<MainPage> {
           _currentPage = indexValue;
         });
       },
-      child: SizedBox(
-        width: context.percentWidth * 17,
-        child: SvgPicture.asset(
-          icon,
-          color: _currentPage == indexValue ? Colors.purple.shade600 : null,
-        ),
-      ).pOnly(bottom: 8),
+      child: (indexValue != 4)
+          ? SizedBox(
+              width: context.percentWidth * 17,
+              child: SvgPicture.asset(
+                icon,
+                color:
+                    _currentPage == indexValue ? Colors.purple.shade600 : null,
+              ),
+            ).pOnly(bottom: 8)
+          : Consumer<CartItemsProvider>(
+              builder: (ctx, val, child) => Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: context.percentWidth * 17,
+                    child: SvgPicture.asset(
+                      icon,
+                      color: _currentPage == indexValue
+                          ? Colors.purple.shade600
+                          : null,
+                    ),
+                  ).pOnly(bottom: 8),
+                  if (val.cartItems.isNotEmpty)
+                    Container(
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.red),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Text(
+                            val.cartItems.length.toString(),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ),
+                      ),
+                    )
+                ],
+              ),
+            ),
     );
   }
 }
