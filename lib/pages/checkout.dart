@@ -108,7 +108,7 @@ class CheckoutScreen extends StatelessWidget {
             _divider,
             _buildPriceRow(
                 title: Strings.totalPrice,
-                price: (cart.discountPrice + 25).toString()),
+                price: (cart.discountPrice + 25).toString() + 'PKR'),
             _divider
           ],
         ).p(24),
